@@ -127,12 +127,12 @@ end
 
 class CartPage
     include PageObject
-    div(:books_names_in_cart, :xpath => '//div[@class="product-title"]')
+    divs(:books_names_in_cart, :xpath => '//div[@class="product-title"]')
 
     def list_books_in_cart
       array_books = []
       books_names_in_cart_elements.each do |a|
-      array_books << a
+      array_books << a.text
     end
     end
   end
