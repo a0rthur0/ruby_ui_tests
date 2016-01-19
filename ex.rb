@@ -8,6 +8,7 @@ class Header
   link(:sign_up_button, :xpath => '//a[@href="/auth/register"]')
   link(:logout_button, :xpath => '//a[@href="/auth/logout"]')
   link(:login_button, :xpath => '//a[@href="/auth/login"]')
+  link(:cart_button, :xpath => '//a[@href="/cart"]')
 
   def click_signup_link
     sign_up_button
@@ -24,7 +25,13 @@ class Header
     LogIn.new(@browser)
   end
 
+  def click_cart_button
+    cart_button
+    CartPage.new(@browser)
+  end
+
 end
+
 class Categoriez
   include PageObject
   links(:category_table, :xpath => '//div[@class="side-list categories in collapse"]//a')
@@ -43,6 +50,7 @@ class Categoriez
     ListBooks.new(@browser)
   end
 end
+
 class ListBooks
   include PageObject
   div(:root, :class => 'product-list productlistingcontainer')
@@ -54,39 +62,35 @@ class ListBooks
     book_block = addable_books_elements[random_index]
     book_name = book_block.h2(:xpath => '//div[@class="product-title"]/h2')
     book_block.link(:xpath => '//a[contains(@class,"button  add-to-cart")]').click
-    #book_name
   end
 
   def is_addable_books_exist
     add_to_cart?
   end
 
-
 end
 
- class LogIn
-    include PageObject
+class LogIn
+  include PageObject
 
-    text_field(:login_name, :name => "user_name")
-    text_field(:login_password, :name => "password")
-    
+  text_field(:login_name, :name => "user_name")
+  text_field(:login_password, :name => "password")
 
-    def fill_form_login(login_name, login_password)
-      self.login_name = login_name
-      self.login_password = login_password
-    end
+  def fill_form_login(login_name, login_password)
+    self.login_name = login_name
+    self.login_password = login_password
+  end
 
-    def click_login_link
-      login_button
-    end
+  def click_login_link
+    login_button
+  end
 
-    def fill_form_login_and_login (login_name, login_password)
-      self.login_name = login_name
-      self.login_password = login_password
-      click_login_link
-    end
+  def fill_form_login_and_login (login_name, login_password)
+    self.login_name = login_name
+    self.login_password = login_password
+    click_login_link
+  end
 end
-
 
 class SignUp
   include PageObject
@@ -96,7 +100,6 @@ class SignUp
   text_field(:pass, :name => "account[password]")
   text_field(:repass, :name => "account[password_confirmation]")
   button(:complete_signup, :xpath => '//form[@id="newUser"]//input[@name="commit"]')
-
 
   def fill_form(first, last, email, pass, repass)
     self.first = first
@@ -120,8 +123,20 @@ class SignUp
     logout_button
   end
 
-
 end
+
+class CartPage
+    include PageObject
+    div(:books_names_in_cart, :xpath => '//div[@class="product-title"]')
+
+    def list_books_in_cart
+      array_books = []
+      books_names_in_cart_elements.each do |a|
+      array_books << a
+    end
+    end
+  end
+
 class SignupTest < Test::Unit::TestCase
   def setup
     @browser ||= Watir::Browser.new :firefox
@@ -136,24 +151,26 @@ class SignupTest < Test::Unit::TestCase
   def test_full_cycle
     @browser.goto("http://retail.circlesoft.net/")
     sign_up_page = Header.new(@browser).click_signup_link
-    sign_up_page.fill_form_and_sign_up("d", "d", "gas@gs.gs", "df", "df")
+    sign_up_page.fill_form_and_sign_up("d", "d", "z0xgas@gs.gs", "df", "df")
     cat_page = Categoriez.new(@browser)
-    def add_random_book(cat_page)
 
+    def add_random_book(cat_page)
       book_list_page  = cat_page.click_random_category
       while not book_list_page.is_addable_books_exist do
         @browser.back
         add_random_book(cat_page)
       end
       name = book_list_page.add_to_cart_random_book
-      name
     end
+
     books = []
     for i in 0..1
       puts i
       books << add_random_book(cat_page)
       @browser.goto("http://retail.circlesoft.net/")
     end
+    cart_page = Header.new(@browser).click_cart_button
+    cart_page.list_books_in_cart.include?(books)
 
   end
 
