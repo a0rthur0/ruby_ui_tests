@@ -151,7 +151,7 @@ class SignupTest < Test::Unit::TestCase
   def test_full_cycle
     @browser.goto("http://retail.circlesoft.net/")
     sign_up_page = Header.new(@browser).click_signup_link
-    sign_up_page.fill_form_and_sign_up("d", "d", "z0xgas@gs.gs", "df", "df")
+    sign_up_page.fill_form_and_sign_up("d", "d", "z09aszc@gcs.gs", "df", "df")
     cat_page = Categoriez.new(@browser)
 
     def add_random_book(cat_page)
@@ -170,7 +170,11 @@ class SignupTest < Test::Unit::TestCase
       @browser.goto("http://retail.circlesoft.net/")
     end
     cart_page = Header.new(@browser).click_cart_button
-    cart_page.list_books_in_cart.include?(books)
+    expected_books = cart_page.list_books_in_cart
+    if expected_books.to_set == books.to_set || expected_books.length == books.length
+      puts "Books are the same"
+    else puts "Failed to compare books, expected books: [1,2], but in fact: [2,3]"
+    end
 
   end
 
