@@ -1,4 +1,4 @@
-Feature: Register new user
+Feature: Register new user and buy 2 books
 
   Scenario:
     Given I am on a books website
