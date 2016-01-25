@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$USER_HOME$/Documents/coding/cucumber_ruby/.idea/cucumber_ruby.iml" filepath="$USER_HOME$/Documents/coding/cucumber_ruby/.idea/cucumber_ruby.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/ruby_watir.iml" filepath="$PROJECT_DIR$/.idea/ruby_watir.iml" />
+    </modules>
+  </component>
+</project>
