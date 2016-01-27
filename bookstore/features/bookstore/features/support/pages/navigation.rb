@@ -13,23 +13,12 @@ class NavigationBlock
     login_button
   end
 
-  def click_signup_link
-    sign_up_button
-  end
-
   def click_logout_link
     logout_button
   end
 
   def click_to_open_cart
     cart_button
-  end
-
-  def check_logout_button_appears
-    if logout_button? == true
-      puts "Login successfull"
-      else puts "Failed check login success"
-    end
   end
 
 end

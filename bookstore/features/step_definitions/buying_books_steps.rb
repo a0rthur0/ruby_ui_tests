@@ -4,30 +4,18 @@ Given(/^I am on a bookstore page$/) do
 end
 
 When(/^I click login button$/) do
-  visit(LoginPage)
+  @navigation.click_login_link
 end
 
-Then /^I should see page title$/ do
-  on(LoginPage).check_title_exist
+Then /^I enter "([^"]*)" in login and "([^"]*)" in pass and login$/ do |email, password|
+  on(LoginPage).fill_form_and_login(email, password)
 end
 
-And(/^I enter "([^"]*)" in email field$/) do |email|
-  on(LoginPage).enter_login(email)
-end
-
-And(/^I enter "([^"]*)" in password field$/) do |password|
-  on(LoginPage).enter_password(password)
-end
-
-And(/^I click complete login button$/) do
-  on(LoginPage).complete_login
-end
-
-And(/^I choose Top_test Category with books$/) do
+When (/^I choose Top_test Category with books$/) do
   on(CategoryPage).open_test_category
 end
 
-And(/^I click Add to cart first book (\d+)$/) do |book_number|
+Then(/^I click Add to cart first book (\d+)$/) do |book_number|
   on(CategoryPage).buy_books(book_number)
 end
 
@@ -36,7 +24,7 @@ And(/^I click Add to cart second book (\d+)$/) do |book_number|
   on(CategoryPage).buy_books(book_number)
 end
 
-And(/^I click on Cart button$/) do
+When(/^I click on Cart button$/) do
   @navigation.click_to_open_cart
 end
 
